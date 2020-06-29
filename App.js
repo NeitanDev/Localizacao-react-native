@@ -30,7 +30,7 @@ function App() {
       },
       erro => console.log(erro),
       {
-        timeout: 2000,
+        timeout: 5000,
         enableHighAccuracy: true,
         maximumAge: 1000
       },
