@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -17,9 +17,28 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 function App() {
+  const [lat, setLat] = useState(0);
+  const [lng, setLng] = useState(0);
+
+  useEffect(() => {
+    navigator.geolocation.watchPosition(
+      ({ coords: { latitude, longitude } }) => {
+        setLat(latitude);
+        setLng(longitude);
+      },
+      () => { },
+      {
+        timeout: 2000,
+        enableHighAccuracy: true,
+        maximumAge: 1000,
+      }
+    )
+  }, []);
+
+
   return (
     <>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="dark-content" translucent={true} backgroundColor={'transparent'} />
       <SafeAreaView>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
