@@ -16,68 +16,33 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import Geolocation from '@react-native-community/geolocation';
+
 function App() {
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
 
   useEffect(() => {
-    navigator.geolocation.watchPosition(
-      ({ coords: { latitude, longitude } }) => {
-        setLat(latitude);
-        setLng(longitude);
+    Geolocation.getCurrentPosition(
+      info => {
+        setLat(info.coords.latitude);
+        setLng(info.coords.longitude);
       },
-      () => { },
+      erro => console.log(erro),
       {
         timeout: 2000,
         enableHighAccuracy: true,
-        maximumAge: 1000,
-      }
-    )
+        maximumAge: 1000
+      },
+    );
   }, []);
 
 
   return (
     <>
-      <StatusBar barStyle="dark-content" translucent={true} backgroundColor={'transparent'} />
+      {/* <StatusBar barStyle="dark-content" translucent={true} backgroundColor={'transparent'} /> */}
       <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
+        <Text>{lat + "  " + lng}</Text>
       </SafeAreaView>
     </>
   );
